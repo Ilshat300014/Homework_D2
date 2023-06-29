@@ -1,0 +1,7 @@
+from news.models import *
+User.objects.create_user(username='petr', password='petr123')
+User.objects.create_user(username='ivan', password='ivan123')
+petr = User.objects.get(username='petr')
+ivan = User.objects.get(username='ivan')
+Author.objects.create(authorUser=petr)
+Author.objects.create(authorUser=ivan)

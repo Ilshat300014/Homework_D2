@@ -5,23 +5,23 @@ from django.db.models import Sum
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     userRating = models.IntegerField(default=0)
-    def update_rating(self):
+    def update_rating(self, user):
         # Рейтинг всех постов автора
-        postRat = self.post_set.all().aggregate(postRating=Sum('postRating'))
+        postRat = self.post_set.aggregate(postRating=Sum('postRating'))
         pRat = 0
         pRat += postRat.get('postRating')
 
         # Рейтинг всех комментариев автора
-        commentRat = self.authorUser.comment_set.all().aggregate(commentRating=Sum('commentRating'))
+        commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('commentRating'))
         cRat = 0
         cRat += commentRat.get('commentRating')
 
-        # # Рейтинг всех комментариев поста
-        # postCommentRat = self.authorUser.post.comment_set.all().aggregate(postCommentRating=Sum('commentRating'))
-        # pcRat = 0
-        # pcRat += postCommentRat.get('postCommentRating')
+        # Рейтинг всех комментариев поста
+        postCommentRat = self.post_set.aggregate(postCommentRating=Sum('comment__commentRating'))
+        pcRat = 0
+        pcRat += postCommentRat.get('postCommentRating')
 
-        self.userRating += pRat * 3 + cRat
+        self.userRating += pRat * 3 + cRat + pcRat
         self.save()
 
 class Category(models.Model):
