@@ -1,7 +1,69 @@
 from news.models import *
-User.objects.create_user(username='petr', password='petr123')
-User.objects.create_user(username='ivan', password='ivan123')
-petr = User.objects.get(username='petr')
-ivan = User.objects.get(username='ivan')
-Author.objects.create(authorUser=petr)
-Author.objects.create(authorUser=ivan)
+user1 = User.objects.create_user(username='petr', password='petr123')
+user2 = User.objects.create_user(username='ivan', password='ivan123')
+petr = Author.objects.create(authorUser=user1)
+ivan = Author.objects.create(authorUser=user2)
+lCat = Category.objects.create(Category='Learning')
+wCat = Category.objects.create(Category='Weather')
+sCat = Category.objects.create(Category='Sport')
+pCat = Category.objects.create(Category='Politic')
+post1 = Post.objects.create(author=petr,choice='AR', postTitle='Post Title1', postText='Post Text1')
+post2 = Post.objects.create(author=ivan,choice='AR', postTitle='Post Title2', postText='Post Text2')
+post3 = Post.objects.create(author=petr,choice='NW', postTitle='Post Title3', postText='Post Text3')
+PostCategory.objects.create(post=post1, category=lCat)
+PostCategory.objects.create(post=post1, category=sCat)
+PostCategory.objects.create(post=post2, category=wCat)
+PostCategory.objects.create(post=post2, category=pCat)
+PostCategory.objects.create(post=post3, category=pCat)
+PostCategory.objects.create(post=post3, category=wCat)
+PostCategory.objects.create(post=post3, category=lCat)
+comment1 = Comment.objects.create(post=post1, user=user2,commentText='smth text1')
+comment2 = Comment.objects.create(post=post2, user=user1,commentText='smth text2')
+comment3 = Comment.objects.create(post=post2, user=user1,commentText='smth text3')
+comment4 = Comment.objects.create(post=post3, user=user2,commentText='smth text4')
+comment5 = Comment.objects.create(post=post3, user=user2,commentText='smth text5')
+comment6 = Comment.objects.create(post=post3, user=user2,commentText='smth text6')
+post1.like()
+post1.like()
+post1.like()
+post1.like()
+post1.like()
+post1.dislike()
+post1.dislike()
+post2.like()
+post2.like()
+post2.like()
+post2.like()
+post2.like()
+post3.like()
+post3.like()
+post3.dislike()
+comment1.like()
+comment1.like()
+comment2.like()
+comment2.like()
+comment2.like()
+comment3.like()
+comment4.like()
+comment4.like()
+comment5.like()
+comment5.like()
+comment5.like()
+comment6.like()
+comment6.like()
+comment2.dislike()
+petr.update_rating()
+ivan.update_rating()
+
+
+
+
+post1 = Post.objects.all()[0]
+post2 = Post.objects.all()[1]
+post3 = Post.objects.all()[2]
+comment1 = Comment.objects.all()[0]
+comment2 = Comment.objects.all()[1]
+comment3 = Comment.objects.all()[2]
+comment4 = Comment.objects.all()[3]
+comment5 = Comment.objects.all()[4]
+comment6 = Comment.objects.all()[5]

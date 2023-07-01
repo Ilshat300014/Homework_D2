@@ -5,7 +5,11 @@ from django.db.models import Sum
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     userRating = models.IntegerField(default=0)
-    def update_rating(self, user):
+
+    def __str__(self):
+        return self.authorUser.username
+    def update_rating(self):
+        self.userRating = 0
         # Рейтинг всех постов автора
         postRat = self.post_set.aggregate(postRating=Sum('postRating'))
         pRat = 0
@@ -16,10 +20,12 @@ class Author(models.Model):
         cRat = 0
         cRat += commentRat.get('commentRating')
 
-        # Рейтинг всех комментариев поста
-        postCommentRat = self.post_set.aggregate(postCommentRating=Sum('comment__commentRating'))
+        # Рейтинг всех комментариев поста автора
+        postComments = self.post_set.annotate()
         pcRat = 0
-        pcRat += postCommentRat.get('postCommentRating')
+        for i in postComments:
+            postCommentRat = i.comment_set.aggregate(postCommentRating=Sum('commentRating'))
+            pcRat += postCommentRat.get('postCommentRating')
 
         self.userRating += pRat * 3 + cRat + pcRat
         self.save()
@@ -43,9 +49,12 @@ class Post(models.Model):
     postText = models.TextField()
     postRating = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'Пост "{self.postTitle}" от {self.author.authorUser.username}'
     def like(self):
         self.postRating += 1
         self.save()
+
     def dislike(self):
         self.postRating -= 1
         self.save()
@@ -61,9 +70,11 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     commentText = models.TextField()
-    dateCreate = models.DateTimeField()
-    commentRating = models.IntegerField()
+    dateCreate = models.DateTimeField(auto_now_add=True)
+    commentRating = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'Комментарий к посту "{self.post.postTitle}" от {self.user.username}'
     def like(self):
         self.commentRating += 1
         self.save()
