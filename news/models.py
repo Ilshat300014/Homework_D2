@@ -51,6 +51,7 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Пост "{self.postTitle}" от {self.author.authorUser.username}'
+
     def like(self):
         self.postRating += 1
         self.save()
@@ -59,8 +60,9 @@ class Post(models.Model):
         self.postRating -= 1
         self.save()
 
+
     def preview(self):
-        return self.postRating[:124] + '...'
+        return self.postText[:124] + '...'
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
