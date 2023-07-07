@@ -8,6 +8,7 @@ class PostsList(ListView):
     template_name = 'news.html'
     context_object_name = 'posts'
     queryset = Post.objects.order_by('-createDate')
+    paginate_by = 1
 
 class PostDetail(DetailView):
     model = Post
