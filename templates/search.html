@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+<!--{% load custom_filters %}-->
+
+{% block title %}
+    Search
+{% endblock title %}
+
+{% block content %}
+    <form method="GET">
+        {{ filter.form }}
+        <!-- Форму от фильтров за нас сделает Django. А вот кнопку, увы, придётся делать самим -->
+        <input class="btn btn-primary" type="submit" value="Найти">
+    </form>
+    {% for post in filter.qs %}
+        <div>
+            <a href="{% url 'news:postDetail' post.id %}">{{ post.postTitle|censor }} {{ post.createDate|date:'d M Y' }} {{ post.postText|truncatewords:20|censor }}</a>
+        </div>
+    {% endfor %}
+{% endblock content %}

@@ -1,6 +1,6 @@
 {% extends 'default.html' %}
 
-{% load custom_filters %}
+<!--{% load custom_filters %}-->
 
 {% block title %}Posts{% endblock title %}
 
@@ -8,32 +8,11 @@
     {% if posts %}
         <h1>Все посты:</h1>
         <h3>Общее количество постов: {{ posts|length }}</h3>
-        {% for post in posts %}
-            <div>{{ post.postTitle|censor }} {{ post.createDate|date:'d M Y' }} {{ post.postText|truncatewords:20|censor }}</div>
-        {% endfor %}
-        {% if is_paginated %}
-            <!-- Если доступна предыдущая страница, то даём ссылку на неё и самую первую страницу -->
-            {% if posts.has_previous %}
-                <a href="?page=1">First</a>
-                <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
-            {% endif %}
-
-            <!-- Показываем только текущую страницу и ближайшие к ней, чтобы список не тянулся и не захламлял страницу -->
-            {% for num in posts.paginator.page_range %}
-                {% if posts.number == num %}
-                    <a>{{ num }}</a>
-                {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
-                    <a href="?page={{ num }}">{{ num }}</a>
-                {% endif %}
-            {% endfor %}
-
-            <!-- Если есть следующая страница, то даём ссылку на неё и на самую последнюю страницу -->
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">>>></a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-            {% endif %}
-
-        {% endif %}
+        <div>{% for post in posts %}
+            <a href="{% url 'news:postDetail' post.id %}">{{ post.postTitle|censor }} {{ post.createDate|date:'d M Y' }} {{ post.postText|truncatewords:20|censor }}</a>
+        {% endfor %}</div>
+        <!-- Заменили код пагинатора на подключение шаблона с этим кодом -->
+        <div>{% include 'parts/paginator.html' %}</div>
     {% else %}
         <h1>Пока новостей нет</h1>
     {% endif %}
