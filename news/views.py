@@ -1,7 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Post
-from django.shortcuts import render
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import *
 from .forms import PostForms
 
@@ -28,20 +26,18 @@ class PostDetail(DetailView):
     template_name = 'post.html'
     context_object_name = 'post'
 
-class PostCreate(ListView):
-    model = Post
+class PostCreate(CreateView):
     template_name = 'postCreate.html'
-    context = 'postCreate'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = PostForms()
-        return context
+    form_class = PostForms
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        print(form.data)
         if form.is_valid():
+            print('save')
             form.save()
         return super().get(request, *args, **kwargs)
+
+
 
 
