@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import *
 from .forms import PostForms
+from django.urls import reverse_lazy
 
 # Create your views here.
 class PostsList(ListView):
@@ -30,13 +31,20 @@ class PostCreate(CreateView):
     template_name = 'postCreate.html'
     form_class = PostForms
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        print(form.data)
-        if form.is_valid():
-            print('save')
-            form.save()
-        return super().get(request, *args, **kwargs)
+class PostUpdate(UpdateView):
+    template_name = 'postCreate.html'
+    form_class = PostForms
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+class PostDelete(DeleteView):
+    template_name = 'postDelete.html'
+    queryset = Post.objects.all()
+    success_url = reverse_lazy('news:allNews')
+
+
 
 
 

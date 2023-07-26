@@ -19,6 +19,9 @@
                <th scope="col">
                    Текст
                </th>
+               <th scope="col">
+                   Действия
+               </th>
            </tr>
         {% for post in posts %}
            <tr>
@@ -30,6 +33,10 @@
                </td>
                <td>
                    {{ post.postText|truncatewords:20|censor }}
+               </td>
+               <td>
+                   <a href="{% url 'news:postUpdate' post.id %}">Редактировать</a>
+                   <a href="{% url 'news:postDelete' post.id %}">Удалить</a>
                </td>
            </tr>
         {% endfor %}

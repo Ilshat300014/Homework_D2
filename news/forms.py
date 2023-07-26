@@ -9,7 +9,7 @@ class PostForms(ModelForm):
         widgets = {
             'author': forms.Select(attrs={'class': 'form-control'}),
             'choice': forms.Select(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'postTitle': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter article title'}),
             'postText': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter article text'})
         }
