@@ -4,6 +4,9 @@
 
 {% block title %}Posts{% endblock title %}
 
+{% block navbar %}
+{% endblock navbar %}
+
 {% block content %}
     {% if posts %}
         <h1>Все посты:</h1>
@@ -46,4 +49,9 @@
     {% else %}
         <h1>Пока новостей нет</h1>
     {% endif %}
+
+    {% if is_not_author %}
+        <a class="btn btn-info" href="{% url 'news:upgrade' %}">
+            Стать автором
+        </a>
 {% endblock content %}
