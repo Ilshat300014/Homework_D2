@@ -3,7 +3,7 @@
 <!--{% load custom_filters %}-->
 
 {% block title %}
-    Add new article
+    Delete the article
 {% endblock title %}
 
 {% block content %}
@@ -20,7 +20,7 @@
  </div>
 </div>
 <form method="POST">
- {% csrf_token %}
+   {% csrf_token %}
    <input class="btn btn-success" type="submit" value="Delete">
 </form>
 {% endblock content %}

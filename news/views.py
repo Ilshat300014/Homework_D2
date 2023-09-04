@@ -21,13 +21,13 @@ class PostsList(ListView):
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
         return context
 
-    @login_required
-    def upgrade_me(request):
-        user = request.user
-        premium_group = Group.objects.get(name='authors')
-        if not request.user.groups.filter(name='authors').exists():
-            premium_group.user_set.add(user)
-        return redirect('/')
+@login_required
+def upgrade_me(request):
+    user = request.user
+    premium_group = Group.objects.get(name='authors')
+    if not request.user.groups.filter(name='authors').exists():
+        premium_group.user_set.add(user)
+    return redirect('news:allNews')
 
 class SearchNews(ListView):
     model = Post
@@ -60,6 +60,12 @@ class PostDelete(LoginRequiredMixin, DeleteView):
     template_name = 'postDelete.html'
     queryset = Post.objects.all()
     success_url = reverse_lazy('news:allNews')
+
+    def post(self, request, *args, **kwargs):
+        print(request.user.username)
+        print(request.POST)
+        print(dir(request))
+        
 
 
 
