@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .filters import *
 from .forms import PostForms
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
@@ -44,11 +44,13 @@ class PostDetail(DetailView):
     template_name = 'post.html'
     context_object_name = 'post'
 
-class PostCreate(LoginRequiredMixin, CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     template_name = 'postCreate.html'
     form_class = PostForms
 
-class PostUpdate(LoginRequiredMixin, UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     template_name = 'postCreate.html'
     form_class = PostForms
 
@@ -56,19 +58,7 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
-class PostDelete(LoginRequiredMixin, DeleteView):
+class PostDelete(DeleteView):
     template_name = 'postDelete.html'
     queryset = Post.objects.all()
     success_url = reverse_lazy('news:allNews')
-
-    def post(self, request, *args, **kwargs):
-        print(request.user.username)
-        print(request.POST)
-        print(dir(request))
-        
-
-
-
-
-
-
