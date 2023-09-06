@@ -32,6 +32,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     categoryName = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, through='UserCategory')
 
     def __str__(self):
         return self.categoryName
@@ -76,6 +77,13 @@ class PostCategory(models.Model):
 
     def __str__(self):
         return self.category.categoryName
+
+class UserCategory(models.Model):
+    userUC = models.ForeignKey(User, on_delete=models.CASCADE)
+    categoryUC = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.categoryUC.categoryName
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

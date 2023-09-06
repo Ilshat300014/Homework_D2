@@ -45,11 +45,20 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
 class PostCreate(PermissionRequiredMixin, CreateView):
+    model = Post
     permission_required = ('news.add_post',)
     template_name = 'postCreate.html'
     form_class = PostForms
 
-class PostUpdate(PermissionRequiredMixin, UpdateView):
+# Хочу как нибудь добраться до категорий, вытащить ту категорию, которую получаю из POST,
+# и подписчикам отправить письмо
+    def post(self, request, *args, **kwargs):
+        request_category = self.model.objects.all()[0].category.subscribers
+        # print(dir(request_category.))
+        print(request_category)
+        # print(request.POST)
+
+class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('news.change_post',)
     template_name = 'postCreate.html'
     form_class = PostForms
