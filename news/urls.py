@@ -9,5 +9,6 @@ urlpatterns = [
     path('add/', PostCreate.as_view(), name='postCreate'),
     path('<int:pk>/edit/', PostUpdate.as_view(), name='postUpdate'),
     path('<int:pk>/delete/', PostDelete.as_view(), name='postDelete'),
-    path('upgrade/', upgrade_me, name='upgrade')
+    path('upgrade/', upgrade_me, name='upgrade'),
+    path('sign_category/<str:category_name>_<int:pk>/', sign_category, name='sign_category'),
 ]
