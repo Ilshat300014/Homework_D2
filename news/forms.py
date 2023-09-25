@@ -17,9 +17,9 @@ class PostForms(ModelForm):
         model = Post
         fields = ['author', 'choice', 'category', 'postTitle', 'postText']
         widgets = {
-            'author': forms.Select(attrs={'class': 'form-control'}),
-            'choice': forms.Select(attrs={'class': 'form-control'}),
-            'category': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'author': forms.Select(attrs={'class': 'form-select'}),
+            'choice': forms.Select(attrs={'class': 'form-select'}),
+            'category': forms.SelectMultiple(attrs={'class': 'form-select', 'size': 2}),
             'postTitle': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter article title'}),
             'postText': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter article text'})
         }

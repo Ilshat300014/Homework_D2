@@ -8,7 +8,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
 
 # Create your views here.
 class PostsList(ListView):
@@ -74,24 +73,6 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
     template_name = 'postCreate.html'
     form_class = PostForms
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            categoryModel = self.model.category.through.category.get_queryset()
-            title = request.POST['postTitle']
-            category_id = int(request.POST['category'])
-            subscribers = categoryModel[category_id - 1].subscribers
-            if len(subscribers.get_queryset()):
-                for subscriber in subscribers.get_queryset():
-                    send_mail(
-                        subject = title, # тема
-                        message = f'Здравствуй, {subscriber.username}. Новая статья в твоём любимом разделе!',  # сообщение с кратким описанием проблемы
-                        from_email = 'aigulapai@yandex.ru', # отправитель
-                        recipient_list = [subscriber.email] # получатель
-                    )
-            form.save()
-        return redirect('news:allNews')
 
 class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('news.change_post',)

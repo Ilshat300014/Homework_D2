@@ -25,6 +25,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'news:allNews' %}">Домой</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'news:postSearch' %}">Поиск</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'news:postCreate' %}">Добавить новый пост</a></li>
+                        {% block login_logout %} {% endblock login_logout %}
                     </ul>
                 </div>
             </div>
