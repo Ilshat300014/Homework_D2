@@ -71,5 +71,5 @@ best_post
 11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
 Post.objects.order_by('-postRating')[0].comment_set.values('dateCreate','user','commentRating','commentText')
 
-
+Post.objects.filter(author=instance.author, dateCreation__date=today).count()
 

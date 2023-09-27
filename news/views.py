@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 # Create your views here.
 class PostsList(ListView):
@@ -73,6 +74,20 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
     template_name = 'postCreate.html'
     form_class = PostForms
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)  # создаём новую форму, забиваем в неё данные из POST-запроса
+        author = request.POST['author']
+        today = datetime.today().date()
+        author_post_count = Post.objects.filter(author=author, createDate__date=today).count()
+        if form.is_valid():  # если пользователь ввёл всё правильно и нигде не накосячил, то сохраняем новый товар
+            if author_post_count < 3:
+                form.save()
+                return redirect('news:allNews')
+            else:
+                print('Лимит превышен')
+                return render(request, 'limit_error.html')
+
 
 class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     permission_required = ('news.change_post',)
