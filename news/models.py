@@ -8,6 +8,7 @@ class Author(models.Model):
 
     def __str__(self):
         return self.authorUser.username
+
     def update_rating(self):
         self.userRating = 0
         # Рейтинг всех постов автора
@@ -36,6 +37,11 @@ class Category(models.Model):
 
     def __str__(self):
         return self.categoryName
+
+    def get_subscribers_email_list(self):
+        email_list = [i['email'] for i in self.subscribers.values()]
+        return email_list
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)

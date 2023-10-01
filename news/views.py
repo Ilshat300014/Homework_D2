@@ -85,7 +85,6 @@ class PostCreate(PermissionRequiredMixin, CreateView):
                 form.save()
                 return redirect('news:allNews')
             else:
-                print('Лимит превышен')
                 return render(request, 'limit_error.html')
 
 

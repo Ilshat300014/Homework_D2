@@ -71,5 +71,17 @@ best_post
 11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
 Post.objects.order_by('-postRating')[0].comment_set.values('dateCreate','user','commentRating','commentText')
 
-Post.objects.filter(author=instance.author, dateCreation__date=today).count()
+
+range¶
+Range test (inclusive).
+
+Example:
+
+import datetime
+
+start_date = datetime.date(2005, 1, 1)
+end_date = datetime.date(2005, 3, 31)
+Entry.objects.filter(pub_date__range=(start_date, end_date))
+
+PostCategory.objects.filter(post__createDate__date__range=(last_week.date(), today.date()))
 
