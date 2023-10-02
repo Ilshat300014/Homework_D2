@@ -6,19 +6,22 @@
     {{ post.postTitle|censor }}
 {% endblock title %}
 
-{% block content %}
-<h3>{{ post.postTitle|censor }}:</h3>
-<p>Опубликовано {{ post.createDate|date:'d M Y H:m' }}</p>
-{{ post.postText|censor }}
+{% load cache %}
+    {% cache 300 content %}
+        {% block content %}
+        <h3>{{ post.postTitle|censor }}:</h3>
+        <p>Опубликовано {{ post.createDate|date:'d M Y H:m' }}</p>
+        {{ post.postText|censor }}
 
-{% if is_not_subscr %}
-    {% for c in category_names %}
-        <p>
-            <a class="btn btn-info" href="{% url 'news:sign_category' category_name=c pk=post.id %}">
-                Подписаться на категорию {{ c }}
-            </a>
-        </p>
-        {% endfor %}
-    {% endif %}
+        {% if is_not_subscr %}
+            {% for c in category_names %}
+                <p>
+                    <a class="btn btn-info" href="{% url 'news:sign_category' category_name=c pk=post.id %}">
+                        Подписаться на категорию {{ c }}
+                    </a>
+                </p>
+                {% endfor %}
+            {% endif %}
 
-{% endblock content %}
+        {% endblock content %}
+    {% endcache %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.core.cache import cache
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -76,6 +77,10 @@ class Post(models.Model):
 
     def preview(self):
         return self.postText[:124] + '...'
+
+    def save(self, *args, **kwargs):
+        super.save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
 
 
 class PostCategory(models.Model):
