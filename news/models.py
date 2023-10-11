@@ -79,7 +79,7 @@ class Post(models.Model):
         return self.postText[:124] + '...'
 
     def save(self, *args, **kwargs):
-        super.save(*args, **kwargs)
+        super().save(*args, **kwargs)
         cache.delete(f'post-{self.pk}')
 
 
