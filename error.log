@@ -1,0 +1,16 @@
+2023-10-12 19:15:06,710 | 40 | Internal Server Error: / | None
+Traceback (most recent call last):
+  File "/home/ilshat/PycharmProjects/pythonProject/py_2venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 56, in inner
+    response = get_response(request)
+  File "/home/ilshat/PycharmProjects/pythonProject/py_2venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ilshat/PycharmProjects/pythonProject/py_2venv/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ilshat/PycharmProjects/pythonProject/py_2venv/lib/python3.8/site-packages/django/views/generic/base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/ilshat/PycharmProjects/pythonProject/py_2venv/lib/python3.8/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+  File "/home/ilshat/PycharmProjects/pythonProject/py_2venv/lib/python3.8/site-packages/django/views/generic/list.py", line 36, in get_queryset
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: PostsList is missing a QuerySet. Define PostsList.model, PostsList.queryset, or override PostsList.get_queryset().
+2023-10-12 19:15:06,712 | 40 | "GET / HTTP/1.1" 500 89122 | None

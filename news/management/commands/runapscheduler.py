@@ -7,6 +7,7 @@ from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
+from django.core.mail import send_mail
 
 from ...models import PostCategory
 from datetime import datetime, timedelta
@@ -28,7 +29,15 @@ def my_job():
 Вот {"список статей, опубликованных" if choice_posts.count() > 0 else "статья, опубликованная"} за прошедшую неделю:\n'''
         for post in choice_posts:
             message = message + 'http://127.0.0.1:8000' + post.post.get_absolute_url() + '\n'
-        print(message)
+            # отправляем письмо
+        send_mail(
+            subject='Новые посты',
+            # имя клиента и дата записи будут в теме для удобства
+            message=message,  # сообщение с кратким описанием проблемы
+            from_email='aigulapai@yandex.ru',
+            # здесь указываете почту, с которой будете отправлять (об этом попозже)
+            recipient_list=[subscribers_emails]  # здесь список получателей. Например, секретарь, сам врач и так далее
+        )
 
 
 
